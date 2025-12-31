@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>การ์ดอวยพรปี 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Sarabun', sans-serif;
+  position: relative;
+  background: #000;
+}
+
+.background {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+
+/* หิมะ */
+.snow-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+.snowflake {
+  position: absolute;
+  top: -10px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.8;
+  filter: blur(1px);
+  animation: fall linear infinite;
+  will-change: transform;
+}
+@keyframes fall {
+  0% { transform: translateY(-10vh) translateX(0); opacity: 0; }
+  100% { transform: translateY(110vh) translateX(20px); opacity: 0.3; }
+}
+
+/* กล่องกรอกชื่อ */
+.center-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 380px;
+  background: rgba(255,255,255,0.98);
+  border-radius: 20px;
+  padding: 30px 20px;
+  text-align: center;
+  z-index: 100;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+  transition: opacity 0.3s ease;
+}
+.center-box h2 {
+  font-size: 1.8rem;
+  margin: 0 0 10px 0;
+  font-weight: 800;
+  color: #c62828;
+}
+.center-box p {
+  color: #555;
+  margin-bottom: 20px;
+}
+.center-box input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 1.1rem;
+  text-align: center;
+  background: #f9f9f9;
+  box-sizing: border-box;
+}
+.center-box button {
+  width: 100%;
+  padding: 14px 0;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg,#d32f2f,#ff5252);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(211, 47, 47, 0.4);
+  transition: transform 0.2s;
+}
+.center-box button:active {
+  transform: scale(0.98);
+}
+
+/* การ์ด */
+.card-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  perspective: 1200px;
+  z-index: 50;
+  width: 90vw;
+  max-width: 380px;
+}
+.card {
+  width: 100%;
+  height: 65vh;
+  max-height: 580px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(.175, .885, .32, 1.275);
+  cursor: pointer;
+}
+.card.flipped {
+  transform: rotateY(180deg);
+}
+.card-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;          /* สำคัญสำหรับ Safari/iOS */
+  transform: translateZ(0);                     /* ช่วย hardware acceleration */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  border: 2px solid rgba(255,255,255,0.2);
+}
+.card-face::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 0;
+}
+.card-face > * {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* หน้าแรก */
+.card-front {
+  padding: 20px;
+  text-align: center;
+}
+.card-front h1 {
+  font-size: clamp(1.8rem, 6vw, 2.8rem);
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(90deg,#fff9c4,#ffd54f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+  margin: 0 0 15px 0;
+  line-height: 1.4;
+}
+.card-front p {
+  font-size: 1.1rem;
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+  line-height: 2;
+  word-break: keep-all;
+}
+
+/* หน้าหลัง */
+.card-back {
+  transform: rotateY(180deg) translateZ(1px);   /* ป้องกันการซ้อนทับ */
+  padding: 20px;
+}
+.wish-box {
+  background: rgba(0, 0, 0, 0.92);
+  border-radius: 18px;
+  padding: 25px 15px;
+  width: 100%;
+  text-align: center;
+  border: 1px solid rgba(255,215,0,0.4);
+  box-sizing: border-box;
+}
+.wish-name {
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  font-weight: 800;
+  margin-bottom: 15px;
+  background: linear-gradient(90deg,#fff59d,#ffc107,#fff59d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.5;
+  direction: ltr;   /* เผื่อกรณี unicode */
+}
+.wish-main {
+  font-size: clamp(0.95rem, 3.2vw, 1.15rem);
+  font-weight: 600;
+  line-height: 2.6;
+  margin-bottom: 20px;
+  color: #fff;
+  text-align: center;
+  word-break: keep-all;
+  word-wrap: break-word;
+  letter-spacing: 0.3px;
+  direction: ltr;
+  unicode-bidi: plaintext;
+}
+.wish-footer {
+  font-size: 0.9rem;
+  color: #bbb;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  padding-top: 15px;
+  line-height: 1.8;
+  direction: ltr;
+}
+</style>
+</head>
+<body>
+<div class="background" id="bgDiv"></div>
+<div class="snow-container" id="snowContainer"></div>
+
+<div class="center-box" id="formBox">
+  <h2>🎊 สวัสดีปีใหม่ 2026 🎊</h2>
+  <p>กรอกชื่อเพื่อรับการ์ดอวยพร</p>
+  <input id="nameInput" type="text" placeholder="ชื่อของคุณ" autocomplete="off">
+  <button onclick="showCard()">รับการ์ดอวยพร ✨</button>
+</div>
+
+<script>
+const wishes = [
+  "ปีใหม่ 2026 นี้ ขอให้ร่ำรวยความสุข มั่งคั่งเงินทอง สุขภาพแข็งแรง",
+  "ขออำนาจสิ่งศักดิ์สิทธิ์ ดลบันดาลให้คุณพบเจอแต่ กัลยาณมิตรที่ดีและโอกาสดีๆ",
+  "คิดเงินให้ได้เงิน คิดทองให้ได้ทอง สมปรารถนาทุกประการ ตลอดปี 2026",
+  "ทิ้งความทุกข์ไว้ปีเก่า เปิดหัวใจรับความสุขใหม่ ขอให้เป็นปีที่ดีที่สุดของคุณ",
+  "Happy New Year 2026 ขอให้งานรุ่ง เงินพุ่ง รักปังๆ ตลอดปีนะ!",
+  "ปีใหม่นี้ ขอให้มีรอยยิ้มเปื้อนหน้าในทุกๆ วัน สุขภาพกายใจแข็งแรงสมบูรณ์"
+];
+
+const backgrounds = [
+  "https://png.pngtree.com/background/20250625/original/pngtree-festive-new-year-2026-background-featuring-gold-stars-red-ribbon-and-picture-image_16664759.jpg",
+  "https://thumbs.dreamstime.com/b/festive-happy-new-year-design-bold-golden-text-vibrant-red-background-decorated-bows-ribbons-confetti-ornaments-404546363.jpg",
+  "https://static.vecteezy.com/system/resources/previews/060/302/049/non_2x/2026-happy-new-year-card-designed-with-a-cute-character-and-fireworks-against-a-red-backdrop-vector.jpg"
+];
+
+window.onload = function() {
+  document.getElementById("bgDiv").style.backgroundImage = `url('${backgrounds[0]}')`;
+  createSnow();
+};
+
+function showCard() {
+  const name = document.getElementById("nameInput").value.trim();
+  if (!name) {
+    alert("กรุณากรอกชื่อก่อนนะครับ 😊");
+    return;
+  }
+
+  const formBox = document.getElementById("formBox");
+  formBox.style.opacity = '0';
+  setTimeout(() => { formBox.style.display = "none"; }, 300);
+
+  const wish = wishes[Math.floor(Math.random() * wishes.length)];
+  const bg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+
+  document.getElementById("bgDiv").style.backgroundImage = `url('${bg}')`;
+
+  document.body.insertAdjacentHTML("beforeend", `
+    <div class="card-container">
+      <div class="card" onclick="this.classList.toggle('flipped')">
+        <div class="card-face card-front" style="background-image:url('${bg}')">
+          <div class="card-front">
+            <h1>${name}</h1>
+            <p>สวัสดีปีใหม่ 2026<br><br>แตะที่การ์ดเพื่อเปิดอ่าน</p>
+          </div>
+        </div>
+        <div class="card-face card-back" style="background-image:url('${bg}')">
+          <div class="wish-box">
+            <div class="wish-name">${name}</div>
+            <div class="wish-main">${wish}</div>
+            <div class="wish-footer">
+              Happy New Year 2026<br>
+              ขอให้เป็นปีที่ยอดเยี่ยม
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `);
+}
+
+function createSnow() {
+  const container = document.getElementById("snowContainer");
+  setInterval(() => {
+    const flake = document.createElement("div");
+    flake.classList.add("snowflake");
+    flake.style.left = Math.random() * 100 + "vw";
+    const size = Math.random() * 5 + 2;
+    flake.style.width = size + "px";
+    flake.style.height = size + "px";
+    flake.style.animationDuration = Math.random() * 6 + 6 + "s";
+    flake.style.opacity = Math.random() * 0.6 + 0.3;
+    container.appendChild(flake);
+    setTimeout(() => { flake.remove(); }, 12000);
+  }, 200);
+}
+</script>
+</body>
+</html>
